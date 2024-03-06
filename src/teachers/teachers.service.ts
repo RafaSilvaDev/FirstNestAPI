@@ -6,11 +6,11 @@ import { TeacherDTO } from './dto/teacher.dto';
 export class TeachersService {
   constructor(private prisma: PrismaService) {}
 
-  async findAll() {
+  async findAll(): Promise<TeacherDTO[]> {
     return await this.prisma.teacher.findMany();
   }
 
-  async findOne(teacherId: string) {
+  async findOne(teacherId: string): Promise<TeacherDTO> {
     const teacher = await this.prisma.teacher.findUnique({
       where: {
         id: teacherId,
@@ -24,14 +24,14 @@ export class TeachersService {
     return teacher;
   }
 
-  async create(teacherDto: TeacherDTO) {
+  async create(teacherDto: TeacherDTO): Promise<TeacherDTO> {
     const teacher = await this.prisma.teacher.create({
       data: teacherDto,
     });
     return teacher;
   }
 
-  async update(teacherDto: TeacherDTO, teacherId: string) {
+  async update(teacherDto: TeacherDTO, teacherId: string): Promise<TeacherDTO> {
     const teacher = await this.prisma.teacher.findUnique({
       where: {
         id: teacherId,
@@ -50,7 +50,7 @@ export class TeachersService {
     });
   }
 
-  async delete(teacherId: string) {
+  async delete(teacherId: string): Promise<TeacherDTO> {
     const teacher = await this.prisma.teacher.findUnique({
       where: {
         id: teacherId,

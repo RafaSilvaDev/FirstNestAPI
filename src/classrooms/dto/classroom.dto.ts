@@ -4,5 +4,5 @@ export type ClassroomDTO = {
   id?: string;
   name: string;
   capacity: number;
-  classes: Class[];
+  classes?: Class[];
 };

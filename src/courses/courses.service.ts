@@ -2,12 +2,13 @@ import { HttpException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/database/PrismaService';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
+import { CourseDTO } from './dto/course.dto';
 
 @Injectable()
 export class CoursesService {
   constructor(private prisma: PrismaService) {}
 
-  async findAll() {
+  async findAll(): Promise<CourseDTO[]> {
     return await this.prisma.course.findMany({
       include: {
         teacher: true,
@@ -15,7 +16,7 @@ export class CoursesService {
     });
   }
 
-  async findOne(courseId: string) {
+  async findOne(courseId: string): Promise<CourseDTO> {
     const course = await this.prisma.course.findUnique({
       where: {
         id: courseId,
@@ -32,14 +33,14 @@ export class CoursesService {
     return course;
   }
 
-  async create(courseDto: CreateCourseDto) {
+  async create(courseDto: CreateCourseDto): Promise<CourseDTO> {
     const course = await this.prisma.course.create({
       data: courseDto,
     });
     return course;
   }
 
-  async update(data: UpdateCourseDto, courseId: string) {
+  async update(data: UpdateCourseDto, courseId: string): Promise<CourseDTO> {
     const course = await this.prisma.course.findUnique({
       where: {
         id: courseId,
@@ -58,7 +59,7 @@ export class CoursesService {
     });
   }
 
-  async delete(courseId: string) {
+  async delete(courseId: string): Promise<CourseDTO> {
     const course = await this.prisma.course.findUnique({
       where: {
         id: courseId,

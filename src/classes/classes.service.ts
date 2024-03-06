@@ -6,7 +6,7 @@ import { ClassDTO } from './dto/class.dto';
 export class ClassesService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async findAll() {
+  async findAll(): Promise<ClassDTO[]> {
     return await this.prisma.class.findMany({
       include: {
         teacher: true,
@@ -15,7 +15,7 @@ export class ClassesService {
     });
   }
 
-  async findOne(classId: string) {
+  async findOne(classId: string): Promise<ClassDTO> {
     const uniqueClass = await this.prisma.class.findUnique({
       where: {
         id: classId,
@@ -33,13 +33,13 @@ export class ClassesService {
     return uniqueClass;
   }
 
-  async create(classDto: ClassDTO) {
+  async create(classDto: ClassDTO): Promise<ClassDTO> {
     return await this.prisma.class.create({
       data: classDto,
     });
   }
 
-  async update(classId: string, classDto: ClassDTO) {
+  async update(classId: string, classDto: ClassDTO): Promise<ClassDTO> {
     const uniqueClass = await this.prisma.class.findUnique({
       where: {
         id: classId,
@@ -58,7 +58,7 @@ export class ClassesService {
     });
   }
 
-  async delete(classId: string) {
+  async delete(classId: string): Promise<ClassDTO> {
     const uniqueClass = await this.prisma.class.findUnique({
       where: {
         id: classId,

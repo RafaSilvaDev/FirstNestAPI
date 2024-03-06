@@ -17,29 +17,32 @@ export class ClassesController {
   constructor(private readonly classesService: ClassesService) {}
 
   @Get()
-  async findAll() {
+  async findAll(): Promise<ClassDTO[]> {
     return this.classesService.findAll();
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string): Promise<ClassDTO> {
     return this.classesService.findOne(id);
   }
 
   @Post()
   @HttpCode(HttpStatus.NO_CONTENT)
-  async create(@Body() classDto: ClassDTO) {
+  async create(@Body() classDto: ClassDTO): Promise<ClassDTO> {
     return this.classesService.create(classDto);
   }
 
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() classDto: ClassDTO) {
+  async update(
+    @Param('id') id: string,
+    @Body() classDto: ClassDTO,
+  ): Promise<ClassDTO> {
     return this.classesService.update(id, classDto);
   }
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  async delete(@Param('id') id: string) {
+  async delete(@Param('id') id: string): Promise<ClassDTO> {
     return this.classesService.delete(id);
   }
 }

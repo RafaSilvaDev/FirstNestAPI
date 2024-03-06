@@ -4,6 +4,6 @@ export type TeacherDTO = {
   id?: string;
   name: string;
   discipline: string;
-  courses: Course[];
-  classes: Class[];
+  courses?: Course[];
+  classes?: Class[];
 };

@@ -17,28 +17,31 @@ export class TeachersController {
   constructor(private readonly teachersService: TeachersService) {}
 
   @Get()
-  async findAll() {
+  async findAll(): Promise<TeacherDTO[]> {
     return this.teachersService.findAll();
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string): Promise<TeacherDTO> {
     return this.teachersService.findOne(id);
   }
 
   @Post()
   @HttpCode(HttpStatus.NO_CONTENT)
-  async create(@Body() createTeacherDto: TeacherDTO) {
+  async create(@Body() createTeacherDto: TeacherDTO): Promise<TeacherDTO> {
     return this.teachersService.create(createTeacherDto);
   }
 
   @Put(':id')
-  async update(@Param('id') id: string, @Body() updateTeacherDto: TeacherDTO) {
+  async update(
+    @Param('id') id: string,
+    @Body() updateTeacherDto: TeacherDTO,
+  ): Promise<TeacherDTO> {
     return this.teachersService.update(updateTeacherDto, id);
   }
 
   @Delete(':id')
-  async delete(@Param('id') id: string) {
+  async delete(@Param('id') id: string): Promise<TeacherDTO> {
     return this.teachersService.delete(id);
   }
 }
