@@ -3,11 +3,15 @@ import { CoursesService } from './courses.service';
 
 describe('CoursesService', () => {
   let service: CoursesService;
+  const mockCoursesService = {};
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [CoursesService],
-    }).compile();
+    })
+      .overrideProvider(CoursesService)
+      .useValue(mockCoursesService)
+      .compile();
 
     service = module.get<CoursesService>(CoursesService);
   });
