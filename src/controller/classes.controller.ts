@@ -9,8 +9,8 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
-import { ClassesService } from './classes.service';
-import { ClassDTO } from './dto/class.dto';
+import { ClassesService } from '../service/classes.service';
+import { ClassDTO } from '../dto/class.dto';
 
 @Controller('classes')
 export class ClassesController {

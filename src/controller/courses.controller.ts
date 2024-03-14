@@ -9,10 +9,10 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
-import { CoursesService } from './courses.service';
-import { CreateCourseDto } from './dto/create-course.dto';
-import { UpdateCourseDto } from './dto/update-course.dto';
-import { CourseDTO } from './dto/course.dto';
+import { CoursesService } from '../service/courses.service';
+import { CreateCourseDto } from '../dto/create-course.dto';
+import { UpdateCourseDto } from '../dto/update-course.dto';
+import { CourseDTO } from '../dto/course.dto';
 
 @Controller('courses')
 export class CoursesController {

@@ -9,8 +9,8 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { TeachersService } from './teachers.service';
-import { TeacherDTO } from './dto/teacher.dto';
+import { TeachersService } from '../service/teachers.service';
+import { TeacherDTO } from '../dto/teacher.dto';
 
 @Controller('teachers')
 export class TeachersController {

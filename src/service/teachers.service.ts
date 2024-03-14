@@ -1,6 +1,6 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/database/PrismaService';
-import { TeacherDTO } from './dto/teacher.dto';
+import { TeacherDTO } from '../dto/teacher.dto';
 
 @Injectable()
 export class TeachersService {
