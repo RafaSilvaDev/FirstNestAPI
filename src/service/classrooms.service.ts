@@ -1,21 +1,17 @@
 import { HttpException, Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/database/PrismaService';
 import { ClassroomDTO } from '../dto/classroom.dto';
+import { ClassroomRepository } from 'src/repository/classrooms.repository';
 
 @Injectable()
 export class ClassroomsService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private repository: ClassroomRepository) {}
 
   async findAll(): Promise<ClassroomDTO[]> {
-    return await this.prisma.classroom.findMany();
+    return await this.repository.findAll();
   }
 
   async findOne(classroomId: string): Promise<ClassroomDTO> {
-    const classroom = await this.prisma.classroom.findUnique({
-      where: {
-        id: classroomId,
-      },
-    });
+    const classroom = await this.repository.findOne({ classroomId });
 
     if (!classroom) {
       throw new HttpException(
@@ -28,20 +24,11 @@ export class ClassroomsService {
   }
 
   async create(classroomDto: ClassroomDTO): Promise<ClassroomDTO> {
-    return await this.prisma.classroom.create({
-      data: classroomDto,
-    });
+    return await this.repository.create({ classroomDto });
   }
 
-  async update(
-    classroomId: string,
-    clasroomDto: ClassroomDTO,
-  ): Promise<ClassroomDTO> {
-    const classroom = await this.prisma.classroom.findUnique({
-      where: {
-        id: classroomId,
-      },
-    });
+  async update(classroomId: string, classroomDto: ClassroomDTO): Promise<void> {
+    const classroom = await this.repository.findOne({ classroomId });
 
     if (!classroom) {
       throw new HttpException(
@@ -50,20 +37,11 @@ export class ClassroomsService {
       );
     }
 
-    return await this.prisma.classroom.update({
-      data: clasroomDto,
-      where: {
-        id: classroomId,
-      },
-    });
+    return await this.repository.update({ classroomId, classroomDto });
   }
 
-  async delete(classroomId: string): Promise<ClassroomDTO> {
-    const classroom = await this.prisma.classroom.findUnique({
-      where: {
-        id: classroomId,
-      },
-    });
+  async delete(classroomId: string): Promise<void> {
+    const classroom = await this.repository.findOne({ classroomId });
 
     if (!classroom) {
       throw new HttpException(
@@ -72,10 +50,6 @@ export class ClassroomsService {
       );
     }
 
-    return await this.prisma.classroom.delete({
-      where: {
-        id: classroomId,
-      },
-    });
+    return await this.repository.delete({ classroomId });
   }
 }

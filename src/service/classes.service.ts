@@ -1,32 +1,19 @@
 import { HttpException, Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/database/PrismaService';
 import { ClassDTO } from '../dto/class.dto';
+import { ClassesRepository } from 'src/repository/classes.repository';
 
 @Injectable()
 export class ClassesService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly repository: ClassesRepository) {}
 
   async findAll(): Promise<ClassDTO[]> {
-    return await this.prisma.class.findMany({
-      include: {
-        teacher: true,
-        classroom: true,
-      },
-    });
+    return await this.repository.findAll();
   }
 
   async findOne(classId: string): Promise<ClassDTO> {
-    const uniqueClass = await this.prisma.class.findUnique({
-      where: {
-        id: classId,
-      },
-      include: {
-        teacher: true,
-        classroom: true,
-      },
-    });
+    const uniqueClass = await this.repository.findOne({ classId });
 
-    if (!uniqueClass) {
+    if (uniqueClass === null) {
       throw new HttpException(`Class with id ${classId} not found.`, 404);
     }
 
@@ -34,45 +21,26 @@ export class ClassesService {
   }
 
   async create(classDto: ClassDTO): Promise<ClassDTO> {
-    return await this.prisma.class.create({
-      data: classDto,
-    });
+    return await this.repository.create({ classDto });
   }
 
-  async update(classId: string, classDto: ClassDTO): Promise<ClassDTO> {
-    const uniqueClass = await this.prisma.class.findUnique({
-      where: {
-        id: classId,
-      },
-    });
+  async update(classId: string, classDto: ClassDTO): Promise<void> {
+    const uniqueClass = await this.repository.findOne({ classId });
 
     if (!uniqueClass) {
       throw new HttpException(`Class with id ${classId} not found.`, 404);
     }
 
-    return await this.prisma.class.update({
-      data: classDto,
-      where: {
-        id: classId,
-      },
-    });
+    return await this.repository.update({ classId, classDto });
   }
 
-  async delete(classId: string): Promise<ClassDTO> {
-    const uniqueClass = await this.prisma.class.findUnique({
-      where: {
-        id: classId,
-      },
-    });
+  async delete(classId: string): Promise<void> {
+    const uniqueClass = await this.repository.findOne({ classId });
 
     if (!uniqueClass) {
       throw new HttpException(`Class with id ${classId} not found.`, 404);
     }
 
-    return await this.prisma.class.delete({
-      where: {
-        id: classId,
-      },
-    });
+    return await this.repository.delete({ classId });
   }
 }

@@ -10,8 +10,6 @@ import {
   Post,
 } from '@nestjs/common';
 import { CoursesService } from '../service/courses.service';
-import { CreateCourseDto } from '../dto/create-course.dto';
-import { UpdateCourseDto } from '../dto/update-course.dto';
 import { CourseDTO } from '../dto/course.dto';
 
 @Controller('courses')
@@ -20,31 +18,31 @@ export class CoursesController {
 
   @Get()
   async findAll(): Promise<CourseDTO[]> {
-    return this.coursesService.findAll();
+    return await this.coursesService.findAll();
   }
 
   @Get(':id')
   async findOne(@Param('id') id: string): Promise<CourseDTO> {
-    return this.coursesService.findOne(id);
+    return await this.coursesService.findOne(id);
   }
 
   @Post()
-  @HttpCode(HttpStatus.NO_CONTENT)
-  async create(@Body() createCourseDto: CreateCourseDto): Promise<CourseDTO> {
-    return this.coursesService.create(createCourseDto);
+  async create(@Body() createCourseDto: CourseDTO): Promise<CourseDTO> {
+    return await this.coursesService.create(createCourseDto);
   }
 
   @Patch(':id')
+  @HttpCode(HttpStatus.NO_CONTENT)
   async update(
     @Param('id') id: string,
-    @Body() updateCourseDto: UpdateCourseDto,
-  ): Promise<CourseDTO> {
-    return this.coursesService.update(updateCourseDto, id);
+    @Body() updateCourseDto: CourseDTO,
+  ): Promise<void> {
+    return await this.coursesService.update(updateCourseDto, id);
   }
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  async delete(@Param('id') id: string): Promise<CourseDTO> {
-    return this.coursesService.delete(id);
+  async delete(@Param('id') id: string): Promise<void> {
+    return await this.coursesService.delete(id);
   }
 }

@@ -1,21 +1,17 @@
 import { HttpException, Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/database/PrismaService';
 import { TeacherDTO } from '../dto/teacher.dto';
+import { TeachersRepository } from 'src/repository/teachers.repository';
 
 @Injectable()
 export class TeachersService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private repository: TeachersRepository) {}
 
   async findAll(): Promise<TeacherDTO[]> {
-    return await this.prisma.teacher.findMany();
+    return await this.repository.findAll();
   }
 
   async findOne(teacherId: string): Promise<TeacherDTO> {
-    const teacher = await this.prisma.teacher.findUnique({
-      where: {
-        id: teacherId,
-      },
-    });
+    const teacher = await this.repository.findOne({ teacherId });
 
     if (!teacher) {
       throw new HttpException(`Teacher with id ${teacherId} not found.`, 404);
@@ -25,46 +21,26 @@ export class TeachersService {
   }
 
   async create(teacherDto: TeacherDTO): Promise<TeacherDTO> {
-    const teacher = await this.prisma.teacher.create({
-      data: teacherDto,
-    });
-    return teacher;
+    return await this.repository.create({ teacherDto });
   }
 
-  async update(teacherDto: TeacherDTO, teacherId: string): Promise<TeacherDTO> {
-    const teacher = await this.prisma.teacher.findUnique({
-      where: {
-        id: teacherId,
-      },
-    });
+  async update(teacherDto: TeacherDTO, teacherId: string): Promise<void> {
+    const teacher = await this.repository.findOne({ teacherId });
 
     if (!teacher) {
       throw new HttpException(`Teacher with id ${teacherId} not found.`, 404);
     }
 
-    return await this.prisma.teacher.update({
-      data: teacherDto,
-      where: {
-        id: teacherId,
-      },
-    });
+    return await this.repository.update({ teacherId, teacherDto });
   }
 
-  async delete(teacherId: string): Promise<TeacherDTO> {
-    const teacher = await this.prisma.teacher.findUnique({
-      where: {
-        id: teacherId,
-      },
-    });
+  async delete(teacherId: string): Promise<void> {
+    const teacher = await this.repository.findOne({ teacherId });
 
     if (!teacher) {
       throw new HttpException(`Teacher with id ${teacherId} not found.`, 404);
     }
 
-    return await this.prisma.teacher.delete({
-      where: {
-        id: teacherId,
-      },
-    });
+    return await this.repository.delete({ teacherId });
   }
 }
